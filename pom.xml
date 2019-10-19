@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mandy</groupId>
-    <artifactId>miaosha_01</artifactId>
+    <artifactId>seckill</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>miaosha_01</name>
+    <name>seckill</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
