@@ -80,6 +80,18 @@
             <version>2.3</version>
             <scope>compile</scope>
         </dependency>
+        <!--两次MD5:引入MD5工具类，添加MD5Util-->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+
 
 
     </dependencies>

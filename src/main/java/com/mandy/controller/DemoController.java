@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by MandyOu on 2019/10/9
  */
 @Controller
+@RequestMapping("/demo")
 public class DemoController {
 
     @Autowired

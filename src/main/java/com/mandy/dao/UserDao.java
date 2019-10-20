@@ -2,14 +2,13 @@ package com.mandy.dao;
 
 import com.mandy.domain.User;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
  * Created by MandyOu on 2019/10/9
  */
-@Mapper
+//@Mapper
 public interface UserDao {
 
     @Select("select * from user where id=#{id}")

@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MapperScan(value = "com.mandy.dao")
 @SpringBootApplication
-public class Miaosha01Application {
+public class SeckillApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Miaosha01Application.class, args);
+        SpringApplication.run(SeckillApplication.class, args);
     }
 
 }
