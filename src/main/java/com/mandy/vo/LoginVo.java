@@ -1,10 +1,20 @@
 package com.mandy.vo;
 
+import com.mandy.validator.IsMobile;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by MandyOu on 2019/10/19
  */
 public class LoginVo {
+    @NotNull
+    @IsMobile
     private String mobile;
+
+    @NotNull
+    @Length(min=32)
     private String password;
 
     public String getMobile() {

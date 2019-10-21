@@ -1,7 +1,6 @@
 package com.mandy.util;
 
 import org.thymeleaf.util.StringUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,10 +16,5 @@ public class ValidatorUtil {
         }
         Matcher m = mobile_pattern.matcher(src);
         return m.matches();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(isMobile("13602861452"));
-        System.out.println(isMobile("1360286145"));
     }
 }
