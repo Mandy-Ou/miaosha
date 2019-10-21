@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
     //拦截所有的Exception，然后再进行判断是不是BindException，再进行进一步处理
     @ExceptionHandler(value = Exception.class)
     public Result<String> exceptionHandler(HttpServletRequest request, Exception e){
+        e.printStackTrace();
         if(e instanceof GlobalException){
             GlobalException ex = (GlobalException)e;
             return Result.error(ex.getCm());  //拦截到错误信息，在这里返回错误信息
