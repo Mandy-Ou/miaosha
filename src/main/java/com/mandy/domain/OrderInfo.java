@@ -1,6 +1,7 @@
 package com.mandy.domain;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 /**
  * Created by MandyOu on 2019/10/22
