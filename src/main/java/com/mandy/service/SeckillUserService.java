@@ -31,13 +31,10 @@ public class SeckillUserService {
     @Autowired
     RedisService redisService;
 
-    public SeckillUser getById(long id){
-        return seckillUserDao.getById(id);
-    }
 
     //遇到异常时直接抛出，让异常处理器去拦截，然后处理
     //这里由本来的return CodeMsg对象，到现在改成boolean，就是为了让我们专注业务，错误信息让异常处理器去处理
-    public boolean login(HttpServletResponse response, LoginVo loginVo){
+    public String login(HttpServletResponse response, LoginVo loginVo){
         if(Objects.isNull(loginVo)){
             throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
@@ -58,7 +55,21 @@ public class SeckillUserService {
         //生成cookie
         String token = UUIDUtil.uuid();
         addCookie(response,token,user);
-        return true;
+        return token;
+    }
+
+    public SeckillUser getById(long id){
+        //取缓存
+        SeckillUser user = redisService.get(SeckillUserKey.getById,""+id,SeckillUser.class);
+        if(user != null){
+            return user;
+        }
+        //取数据库
+        user = seckillUserDao.getById(id);
+        if(user != null){
+            redisService.set(SeckillUserKey.getById,""+id,user);
+        }
+        return user;
     }
 
     public SeckillUser getByToken(HttpServletResponse response,String token) {
@@ -70,6 +81,24 @@ public class SeckillUserService {
             addCookie(response,token,user);
         }
         return user;
+    }
+
+    public boolean updatePassword(String token,long id,String formPass){
+        //取user
+        SeckillUser user = getById(id);
+        if(Objects.isNull(user)){
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+        }
+        //更新数据库
+        SeckillUser toBeUpdate = new SeckillUser();
+        toBeUpdate.setId(id);
+        toBeUpdate.setPassword(MD5Util.formPassToDBPass(formPass,user.getSalt()));
+        seckillUserDao.update(toBeUpdate);
+        //处理缓存
+        redisService.delete(SeckillUserKey.getById,""+id);
+        user.setPassword(toBeUpdate.getPassword());
+        redisService.set(SeckillUserKey.token,token,user);
+        return true;
     }
 
     private void addCookie(HttpServletResponse response,String token,SeckillUser user){

@@ -14,6 +14,7 @@ import org.thymeleaf.util.StringUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 /**
  * 参数分解器
@@ -49,6 +50,9 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     private String getCookieValue(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
+        if(Objects.isNull(cookies) || cookies.length <= 0){
+            return null;
+        }
         for(Cookie cookie:cookies){
             if(cookie.getName().equals(cookieName)){
                 return cookie.getValue();
