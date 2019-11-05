@@ -3,8 +3,10 @@ package com.mandy.controller;
 import com.mandy.domain.SeckillUser;
 import com.mandy.redis.GoodsKey;
 import com.mandy.redis.RedisService;
+import com.mandy.result.Result;
 import com.mandy.service.GoodsService;
 import com.mandy.service.SeckillUserService;
+import com.mandy.vo.GoodsDetailVo;
 import com.mandy.vo.GoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,9 +76,40 @@ public class GoodsController {
         return html;
     }
 
-    @RequestMapping(value = "/to_detail/{goodsId}", produces = "text/html")
+    @RequestMapping(value = "/detail/{goodsId}")
     @ResponseBody
-    public String detail(HttpServletRequest request, HttpServletResponse response, Model model, SeckillUser user, @PathVariable("goodsId") long goodsId) {
+    public Result<GoodsDetailVo> detail(HttpServletRequest request, HttpServletResponse response, Model model, SeckillUser user, @PathVariable("goodsId") long goodsId) {
+        GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
+
+        long startAt = goods.getStartDate().getTime();
+        long endAt = goods.getEndDate().getTime();
+        long now = System.currentTimeMillis();
+
+        int seckillStatus = 0;
+        int remainSeconds = 0;
+
+        if (now < startAt) {      //秒杀还没开始，倒计时
+            seckillStatus = 0;
+            remainSeconds = (int) ((startAt - now) / 1000);
+        } else if (now > endAt) {  //秒杀已经结束
+            seckillStatus = 2;
+            remainSeconds = -1;
+        } else {                  //秒杀进行中
+            seckillStatus = 1;
+            remainSeconds = 0;
+        }
+
+        GoodsDetailVo vo = new GoodsDetailVo();
+        vo.setGoods(goods);
+        vo.setUser(user);
+        vo.setRemainSeconds(remainSeconds);
+        vo.setSeckillStatus(seckillStatus);
+        return Result.success(vo);
+    }
+
+    @RequestMapping(value = "/to_detail2/{goodsId}", produces = "text/html")
+    @ResponseBody
+    public String detail2(HttpServletRequest request, HttpServletResponse response, Model model, SeckillUser user, @PathVariable("goodsId") long goodsId) {
         model.addAttribute("user", user);
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
         model.addAttribute("goods", goods);
@@ -114,6 +147,7 @@ public class GoodsController {
         }
         return html;
     }
+
 
 
 }
