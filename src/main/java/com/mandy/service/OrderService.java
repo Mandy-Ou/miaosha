@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by MandyOu on 2019/10/23
@@ -26,9 +27,12 @@ public class OrderService {
     RedisService redisService;
 
     public SeckillOrder getSeckillOrderByUserIdGoodsId(Long userId, long goodsId) {
-//        return orderDao.getSeckillOrderByUserIdGoodsId(userId,goodsId);
-        //直接在redis缓存中查找
-        return redisService.get(OrderKey.getSeckillOrderByUidGid,""+userId+"_"+goodsId,SeckillOrder.class);
+        //先在redis缓存中查找
+        SeckillOrder seckillOrder = redisService.get(OrderKey.getSeckillOrderByUidGid,""+userId+"_"+goodsId,SeckillOrder.class);
+        if(Objects.isNull(seckillOrder)){
+            seckillOrder = orderDao.getSeckillOrderByUserIdGoodsId(userId,goodsId);
+        }
+        return seckillOrder;
     }
 
     public OrderInfo getOrderById(long orderId) {
@@ -47,11 +51,11 @@ public class OrderService {
         orderInfo.setOrderChannel(1);
         orderInfo.setStatus(0);
         orderInfo.setCreateDate(new Date());
-        long orderId = orderDao.insert(orderInfo);
+        orderDao.insert(orderInfo);
 
         SeckillOrder seckillOrder = new SeckillOrder();
         seckillOrder.setUserId(user.getId());
-        seckillOrder.setOrderId(orderId);
+        seckillOrder.setOrderId(orderInfo.getId());
         seckillOrder.setGoodsId(goods.getId());
         orderDao.insertSeckillOrder(seckillOrder);
 
@@ -60,4 +64,8 @@ public class OrderService {
         return orderInfo;
     }
 
+    public void deleteOrders() {
+        orderDao.deleteOrders();
+        orderDao.deleteSeckillOrders();
+    }
 }

@@ -29,6 +29,4 @@ public class UserController {
     public Result<SeckillUser> info(Model model, SeckillUser user){
         return Result.success(user);
     }
-
-
 }

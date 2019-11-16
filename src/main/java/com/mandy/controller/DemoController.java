@@ -1,6 +1,7 @@
 package com.mandy.controller;
 
 import com.mandy.domain.User;
+import com.mandy.rabbitmq.MQSender;
 import com.mandy.redis.RedisService;
 import com.mandy.redis.UserKey;
 import com.mandy.result.CodeMsg;
@@ -24,6 +25,40 @@ public class DemoController {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    MQSender sender;
+
+/*
+    @RequestMapping("/mq")
+    @ResponseBody
+    public Result<String> mq(){
+        sender.send("hello,Mandy");
+        return Result.success("hello,RabbitMQ (simple test)");
+    }
+
+    @RequestMapping("/mq/topic")
+    @ResponseBody
+    public Result<String> mqTopic(){
+        sender.sendTopic("hello,Mandy");
+        return Result.success("hello,RabbitMQ (topic test)");
+    }
+
+    @RequestMapping("/mq/fanout")
+    @ResponseBody
+    public Result<String> mqFanout(){
+        sender.sendFanout("hello,Mandy");
+        return Result.success("hello,RabbitMQ (fanout test)");
+    }
+
+    @RequestMapping("/mq/header")
+    @ResponseBody
+    public Result<String> mqHeader(){
+        sender.sendHeader("hello,Mandy");
+        return Result.success("hello,RabbitMQ (header test)");
+    }
+*/
+
 
     @RequestMapping("/hello")
     @ResponseBody

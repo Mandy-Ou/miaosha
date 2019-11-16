@@ -2,10 +2,7 @@ package com.mandy.dao;
 
 import com.mandy.domain.OrderInfo;
 import com.mandy.domain.SeckillOrder;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
 
 /**
  * Created by MandyOu on 2019/10/23
@@ -24,4 +21,10 @@ public interface OrderDao {
 
     @Select("select * from order_info where id=#{orderId}")
     public OrderInfo getOrderById(@Param("orderId")long orderId);
+
+    @Delete("delete from order_info")
+    public void deleteOrders();
+
+    @Delete("delete from seckill_order")
+    public void deleteSeckillOrders();
 }
