@@ -86,7 +86,7 @@
         <dependency>
             <groupId>net.minidev</groupId>
             <artifactId>json-smart</artifactId>
-            <version>2.3</version>
+            <version>2.4.5</version>
             <scope>compile</scope>
         </dependency>
         <!--两次MD5:引入MD5工具类，添加MD5Util-->
